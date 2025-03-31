@@ -1,6 +1,6 @@
 # RMCP
 [![Crates.io Version](https://img.shields.io/crates/v/rmcp)](https://crates.io/crates/rmcp)
-![Release status](https://github.commodelcontextprotocol/rust-sdk/actions/workflows/release.yml/badge.svg)
+![Release status](https://github.com/modelcontextprotocol/rust-sdk/actions/workflows/release.yml/badge.svg)
 [![docs.rs](https://img.shields.io/docsrs/rmcp)](https://docs.rs/rmcp/latest/rmcp)
 
 一个基于tokio异步运行时的官方Model Context Protocol SDK实现。
@@ -32,22 +32,22 @@ use tokio::io::{stdin, stdout};
 let transport = (stdin(), stdout());
 ```
 
-传输层类型必须实现 [`IntoTransport`](crate::transport::IntoTransport) trait, 这个特性允许分割成一个sink和一个stream。
+传输层类型必须实现 [`IntoTransport`](https://docs.rs/rmcp/latest/rmcp/transport/trait.IntoTransport.html) trait, 这个特性允许分割成一个sink和一个stream。
 
-对于客户端, Sink 的 Item 是 [`ClientJsonRpcMessage`](crate::model::ClientJsonRpcMessage)， Stream 的 Item 是 [`ServerJsonRpcMessage`](crate::model::ServerJsonRpcMessage)
+对于客户端, Sink 的 Item 是 [`ClientJsonRpcMessage`](https://docs.rs/rmcp/latest/rmcp/model/enum.ClientJsonRpcMessage.html)， Stream 的 Item 是 [`ServerJsonRpcMessage`](https://docs.rs/rmcp/latest/rmcp/model/enum.ServerJsonRpcMessage.html)
 
-对于服务端, Sink 的 Item 是 [`ServerJsonRpcMessage`](crate::model::ServerJsonRpcMessage)， Stream 的 Item 是 [`ClientJsonRpcMessage`](crate::model::ClientJsonRpcMessage)
+对于服务端, Sink 的 Item 是 [`ServerJsonRpcMessage`](https://docs.rs/rmcp/latest/rmcp/model/enum.ServerJsonRpcMessage.html)， Stream 的 Item 是 [`ClientJsonRpcMessage`](https://docs.rs/rmcp/latest/rmcp/model/enum.ClientJsonRpcMessage.html)
 
-##### 这些类型自动实现了 [`IntoTransport`](crate::transport::IntoTransport) trait
-1. 已经同时实现了 [`Sink`](futures::Sink) 和 [`Stream`](futures::Stream) trait的类型。
+##### 这些类型自动实现了 [`IntoTransport`](https://docs.rs/rmcp/latest/rmcp/transport/trait.IntoTransport.html) trait
+1. 已经同时实现了 [`Sink`](https://docs.rs/futures/latest/futures/sink/trait.Sink.html) 和 [`Stream`](https://docs.rs/futures/latest/futures/stream/trait.Stream.html) trait的类型。
 2. 由sink `Tx` 和 stream `Rx`组成的元组: `(Tx, Rx)`。
-3. 同时实现了 [`tokio::io::AsyncRead`] 和 [`tokio::io::AsyncWrite`] trait的类型。
-4. 由 [`tokio::io::AsyncRead`] `R `和 [`tokio::io::AsyncWrite`] `W` 组成的元组:  `(R, W)`。
+3. 同时实现了 [`tokio::io::AsyncRead`](https://docs.rs/tokio/latest/tokio/io/trait.AsyncRead.html) 和 [`tokio::io::AsyncWrite`](https://docs.rs/tokio/latest/tokio/io/trait.AsyncWrite.html) trait的类型。
+4. 由 [`tokio::io::AsyncRead`](https://docs.rs/tokio/latest/tokio/io/trait.AsyncRead.html) `R `和 [`tokio::io::AsyncWrite`](https://docs.rs/tokio/latest/tokio/io/trait.AsyncWrite.html) `W` 组成的元组:  `(R, W)`。
 
-例如，你可以看到我们如何轻松地通过TCP流或http升级构建传输层。 [examples](examples/README.md)
+例如，你可以看到我们如何轻松地通过TCP流或http升级构建传输层。 [examples](https://github.com/modelcontextprotocol/rust-sdk/tree/main/examples)
 
 #### 2. 构建服务
-你可以通过 [`ServerHandler`](crates/rmcp/src/handler/server.rs) 或 [`ClientHandler`](crates/rmcp/src/handler/client.rs) 轻松构建服务
+你可以通过 [`ServerHandler`](https://docs.rs/rmcp/latest/rmcp/handler/server/index.html) 或 [`ClientHandler`](https://docs.rs/rmcp/latest/rmcp/handler/client/index.html) 轻松构建服务
 
 ```rust, ignore
 let service = common::counter::Counter::new();
@@ -63,7 +63,7 @@ let server = service.serve(transport).await?;
 一旦服务初始化完成，你可以发送请求或通知：
 
 ```rust, ignore
-// 请求 
+// 请求
 let roots = server.list_roots().await?;
 
 // 或发送通知
@@ -80,7 +80,7 @@ let quit_reason = server.cancel().await?;
 ### 使用宏来声明工具
 使用 `toolbox` 和 `tool` 宏来快速创建工具。
 
-请看这个[文件](examples/servers/src/common/calculator.rs)。
+请看这个[示例文件](https://github.com/modelcontextprotocol/rust-sdk/blob/main/examples/servers/src/common/calculator.rs)。
 ```rust, ignore
 use rmcp::{ServerHandler, model::ServerInfo, schemars, tool};
 
@@ -131,7 +131,6 @@ impl ServerHandler for Calculator {
         }
     }
 }
-
 ```
 你要做的唯一事情就是确保函数的返回类型实现了 `IntoCallToolResult`。
 
@@ -145,9 +144,8 @@ impl ServerHandler for Calculator {
 let service = service.into_dyn();
 ```
 
-
 ### 示例
-查看 [examples](examples/README.md)
+查看 [examples](https://github.com/modelcontextprotocol/rust-sdk/tree/main/examples)
 
 ### 功能特性
 - `client`: 使用客户端sdk
@@ -161,5 +159,4 @@ let service = service.into_dyn();
 
 ## 相关资源
 - [MCP Specification](https://spec.modelcontextprotocol.io/specification/2024-11-05/)
-
 - [Schema](https://github.com/modelcontextprotocol/specification/blob/main/schema/2024-11-05/schema.ts)
